@@ -1,10 +1,40 @@
 <?php
 session_start();
 require_once('../admin/cn.php');
+
+
 if (!(isset($_SESSION['email']))){
 	echo ("<SCRIPT LANGUAGE='JavaScript'>
 		window.location.href='../';
 		</SCRIPT>");
+}else{
+	/*$sql = "SELECT name, last_name, number, active FROM users = ".$_SESSION['email']."";
+	$result = $conn->query($sql);
+
+	if ($result->num_rows > 0) {
+			  // output data of each row
+		while($row = $result->fetch_assoc()) {
+			
+		}
+	} else {
+		echo "0 results";
+	}*/
+	
+
+	$sql = "SELECT name, last_name, number, active FROM users WHERE email='".$_SESSION['email']."'";
+	$result = $conn->query($sql);
+	if ($result->num_rows > 0) {
+						  // output data of each row
+		while($row = $result->fetch_assoc()) {
+			$name=$row["name"];
+			$number=$row["number"];
+			$last_name=$row["last_name"];
+			$active=$row["active"];
+		}
+	} else {
+		echo "0 results";
+	}
+
 }
 ?>
 <head>
@@ -26,7 +56,8 @@ if (!(isset($_SESSION['email']))){
 	<a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#"><img src="../img/logo.png" width="22" ></a>
 	<ul class="navbar-nav px-3">
 		<li class="nav-item text-nowrap">
-			<a class="nav-link" href="../login/end/">Cerrar sesion</a>
+			<a class="btn btn-link text-light" href=""><i class="fas fa-user-md"></i> <?php echo $name." ".$last_name; ?></a>
+			<a class="btn btn-outline-light" data-toggle="tooltip" title="Cerrar sesion" href="../login/end/"><i class="fas fa-power-off"></i></a>
 		</li>
 	</ul>
 </nav>
@@ -68,12 +99,30 @@ if (!(isset($_SESSION['email']))){
 			<div class="container">
 				<div class="row">
 					<div class="col-md-6">
-						<form method="post" action="#" id="#">
+						<?php
+						$folder_path = "../user/".$_SESSION['email']."/cedula/";
+						if (!file_exists($folder_path)) {
+							echo '<form method="post" action="update_cedula/" enctype="multipart/form-data">
 							<div class="form-group files">
 								<label>Adjunta tu cedula a continuación:</label>
-								<input type="file" class="form-control" style="color:transparent;" onchange="this.style.color = 'black';">
+								<input type="file" name="fileToUpload" class="form-control" >'; ?>
+								<input type="hidden" name="folderId" value="<?php echo $_SESSION["email"]; ?>" id="exampleFormControlFile1">
+							<?php echo '
 							</div>
-						</form>
+							<button type="submit" id="csvfile" class="btn btn-success">Actualizar</button>
+						</form>';
+						}else{
+							foreach(glob('../user/'.$_SESSION['email'].'/cedula/*.{jpg,png,pdf}', GLOB_BRACE) as $file) {
+								if (preg_match('/(\.jpg|\.png|\.bmp)$/', $file)) {
+									echo '<img class="profile-pic" src="'.$file.'" height="80" width="80"/><br>';
+								}else{
+
+								}
+							}
+
+						}
+						?>
+						
 					</div>
 					<div class="col-md-6">
 						b
@@ -84,4 +133,8 @@ if (!(isset($_SESSION['email']))){
 		</main>
 	</div>
 </div>
-
+<script>
+	$(document).ready(function(){
+		$('[data-toggle="tooltip"]').tooltip();
+	});
+</script>

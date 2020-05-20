@@ -9,18 +9,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 	$todayVisit = date("Y-m-d H:i:s");
-	$sqlVisit = "INSERT INTO visitos (section, timestamp) VALUES ('login', '$todayVisit')";
-	$conn->query($sqlVisit);
 
-
-	$sql = "SELECT email, name, last_name FROM users WHERE email='$email' AND pwd='$pwd' and active=1";
+	$sql = "SELECT email, name, last_name FROM users WHERE email='$email' AND pwd='$pwd'";
 	$result = $conn->query($sql);
 
 	if ($result->num_rows > 0) {
 	    // output data of each row
 		while($row = $result->fetch_assoc()) {
 			$_SESSION["email"] =	$row["email"];
-			$_SESSION["type_user"] =	$row["type"];
+			
 			if (isset($_SESSION['email'])){
 				echo ("<SCRIPT LANGUAGE='JavaScript'>
 					window.location.href='../dashboard/';
@@ -49,10 +46,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 		}
 	} else{
-		echo ("<SCRIPT LANGUAGE='JavaScript'>
+		/*echo ("<SCRIPT LANGUAGE='JavaScript'>
 			window.alert('El email y contraseña que escribiste no coinciden')
 			window.location.href='../';
-			</SCRIPT>");
+			</SCRIPT>");*/
 	}
 
 
