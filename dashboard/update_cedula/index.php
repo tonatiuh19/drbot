@@ -21,41 +21,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$fileOk = 1;
 	$types = array('image/jpeg', 'image/jpg', 'image/png');
 
-	if (($_FILES["fileToUpload"]["type"] == "image/jpeg") || ($_FILES["fileToUpload"]["type"] == "image/jpg") || ($_FILES["fileToUpload"]["type"] == "image/png"))
+	if (($_FILES['fileToUpload']['type'] == "application/pdf") || ($_FILES["fileToUpload"]["type"] == "image/jpeg") || ($_FILES["fileToUpload"]["type"] == "image/jpg") || ($_FILES["fileToUpload"]["type"] == "image/png"))
 	{
 		if (move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $newname))
 		{
 			$fileOk = 1;
-			/*echo ("<SCRIPT LANGUAGE='JavaScript'>
+			echo ("<SCRIPT LANGUAGE='JavaScript'>
 				window.location.href='../';
-				</SCRIPT>");*/
+				</SCRIPT>");
 		}
 		else
 		{
 			$fileOk = 2;
-			/*echo ("<SCRIPT LANGUAGE='JavaScript'>
-				window.alert('Solo se permiten archivos PNG & JPG.')
+			echo ("<SCRIPT LANGUAGE='JavaScript'>
+				window.alert('Solo se permiten archivos PNG, JPG & PDF.')
 				window.location.href='../';
-				</SCRIPT>");*/
+				</SCRIPT>");
 		}
 	}
 	else
 	{
 		$fileOk = 3;
-		/*echo ("<SCRIPT LANGUAGE='JavaScript'>
-			window.alert('Solo se permiten archivos PNG & JPG.')
+		echo ("<SCRIPT LANGUAGE='JavaScript'>
+			window.alert('Solo se permiten archivos PNG, JPG & PDF.')
 			window.location.href='../';
-			</SCRIPT>");*/
+			</SCRIPT>");
 	}
 
 }else{
 	$fileOk = 4;
-	/*echo ("<SCRIPT LANGUAGE='JavaScript'>
+	echo ("<SCRIPT LANGUAGE='JavaScript'>
 		window.location.href='../';
-		</SCRIPT>");*/
+		</SCRIPT>");
 }
 
-echo "Aqui: ".$fileOk;
+//echo "Aqui: ".$fileOk;
 
 function test_input($data) {
 	$data = trim($data);
